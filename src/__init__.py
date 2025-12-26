@@ -1,0 +1,5 @@
+"""
+Text Analysis with spaCy - Source Package
+"""
+
+__version__ = "1.0.0"
