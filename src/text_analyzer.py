@@ -150,12 +150,13 @@ class TextAnalyzer:
         for i, doc in enumerate(tqdm(self.nlp.pipe(texts, batch_size=config.BATCH_SIZE),
                                      total=len(texts),
                                      desc="Computing statistics")):
+            non_space_tokens = [token for token in doc if not token.is_space]
             stats.append({
                 'text_id': i,
-                'num_tokens': len([token for token in doc if not token.is_space]),
+                'num_tokens': len(non_space_tokens),
                 'num_sentences': len(list(doc.sents)),
                 'num_entities': len(doc.ents),
-                'avg_word_length': sum(len(token.text) for token in doc if not token.is_space) / max(len([t for t in doc if not t.is_space]), 1)
+                'avg_word_length': sum(len(token.text) for token in non_space_tokens) / max(len(non_space_tokens), 1)
             })
         
         return pd.DataFrame(stats)
